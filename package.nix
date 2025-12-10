@@ -1,5 +1,6 @@
 {
   buildDeps,
+  runtimeDeps,
   haskellPackages,
   lib,
   pkgs,
@@ -9,7 +10,7 @@
   ghcPackages,
   ...
 }:
-stdenv.mkDerivation {
+stdenv.mkDerivation rec {
   pname = "hs-rgfw";
   version = "0.1.0";
   src = ./.;
@@ -17,11 +18,11 @@ stdenv.mkDerivation {
     [
       (haskellPackages.ghcWithPackages ghcPackages)
     ]
-    ++ buildDeps;
+    ++ buildDeps ++ runtimeDeps;
   buildInputs =
     [
     ]
-    ++ buildDeps;
+    ++ runtimeDeps;
   configurePhase = ''
     export PKG_CONFIG_PATH=/run/current-system/sw/lib/pkgconfig
 
@@ -43,7 +44,7 @@ stdenv.mkDerivation {
   '';
   buildPhase = ''
     mkdir src/lib
-    cp lib/* src/lib/
+    cp -r lib/* src/lib/
     cp ccode/*.c ./
     ghc ${ghcOptions} ./src/Main.hs -o ./Main $(pkg-config --cflags --libs gl wayland-client wayland-egl wayland-cursor xkbcommon x11 xcursor xrandr xi) -I./headers/ $(ls *.c)
     mkdir ./docs
@@ -53,6 +54,7 @@ stdenv.mkDerivation {
     mkdir -p $out/bin
     cp ./Main $out/bin/hs-rgfw
     cp ./docs $out/docs -r
+    wrapProgram "$out/bin/${meta.mainProgram}" --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath buildInputs}"
   '';
 
   meta = {

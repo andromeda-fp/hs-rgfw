@@ -1,6 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "nixpkgs/nixpkgs-unstable";
+    self.submodules = true;
   };
   outputs = {nixpkgs, ...}: let
     system = "x86_64-linux";
@@ -47,10 +48,6 @@
     ghcPackages = p: [
     ];
     buildDeps = [
-      pkgs.pkg-config
-      pkgs.wayland-protocols
-      pkgs.wayland-scanner
-
       pkgs.egl-wayland
       pkgs.libGL
       pkgs.libxkbcommon
@@ -60,6 +57,12 @@
       pkgs.xorg.libXi
       pkgs.xorg.libXrandr
     ];
+    runtimeDeps = [
+      pkgs.makeWrapper
+      pkgs.pkg-config
+      pkgs.wayland-protocols
+      pkgs.wayland-scanner
+    ];
   in {
     packages.${system} = {
       debug = pkgs.callPackage ./package.nix {
@@ -67,24 +70,28 @@
         haddockOptions = noHaddockOptions;
         inherit ghcPackages;
         inherit buildDeps;
+        inherit runtimeDeps;
       };
       release = pkgs.callPackage ./package.nix {
         ghcOptions = releaseGhcOptions;
         haddockOptions = noHaddockOptions;
         inherit ghcPackages;
         inherit buildDeps;
+        inherit runtimeDeps;
       };
       docs = pkgs.callPackage ./package.nix {
         ghcOptions = "--version";
         inherit haddockOptions;
         inherit ghcPackages;
         inherit buildDeps;
+        inherit runtimeDeps;
       };
       default = pkgs.callPackage ./package.nix {
         ghcOptions = releaseGhcOptions;
         inherit haddockOptions;
         inherit ghcPackages;
         inherit buildDeps;
+        inherit runtimeDeps;
       };
     };
   };

@@ -21,25 +21,19 @@ main = do
                 800
                 600
                 $ mkWindowFlags 
-                  [ WindowCenter
-                  , WindowNoResize
+                  [ WindowNoResize
                   , WindowOpenGL
+                  , WindowFullscreen
                   ]
               )
-  let loop = do
-        putStrLn $ show window
-        putStrLn
-          $ show
-            $ mkWindowFlags 
-              [ WindowCenter
-              , WindowNoResize
-              , WindowOpenGL
-              ]
+  let loop ctr = do
         shouldClose <- rgfwWindowShouldClose window
-        if 0 == shouldClose
-        then return ()
-        else loop
-  loop
+        if 0 /= shouldClose
+        then return shouldClose
+        else loop $ ctr + 1
+  exitCode <- loop 0
+  putStrLn $ show exitCode
+  return ()
 
 --------------------------------------------------------------------------------
 -- Haskell-ier abstractions
@@ -107,15 +101,15 @@ type RGFWwindowFlags = Word32
 
 type RGFWbool = CUInt
 
-foreign import capi "lib/RGFW.h RGFW_createWindow" rgfwCreateWindow
-  :: CString
-  -> Int32
-  -> Int32
-  -> Int32
-  -> Int32
+foreign import capi "lib/RGFW_HS.h RGFW_createWindow" rgfwCreateWindow
+  :: Ptr CChar
+  -> CInt
+  -> CInt
+  -> CInt
+  -> CInt
   -> RGFWwindowFlags
   -> IO RGFWwindowPtr
 
-foreign import capi "lib/RGFW.h RGFW_window_shouldClose" rgfwWindowShouldClose
+foreign import capi "lib/RGFW_HS.h RGFW_window_shouldClose" rgfwWindowShouldClose
   :: RGFWwindowPtr
   -> IO RGFWbool
