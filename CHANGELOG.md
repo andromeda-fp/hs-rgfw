@@ -12,6 +12,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 - support for actually doing anything
 - autogen code
 
+## [0.1.0.1] -- 2025-12-11
+
+- does removing wayland but leaving the API intact count as breaking?
+
+### Changed
+
+- no more dependencies on wayland libraries or xkbcommon
+
+### Removed
+
+- any semblance of Wayland support; use wayland-satelite or something
+
 ## [0.1.0.0] -- 2025-12-10
 
 ### Removed
