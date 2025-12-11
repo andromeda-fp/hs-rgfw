@@ -1,39 +1,11 @@
 {-# LANGUAGE CApiFFI #-}
 
-module Main (main) where
+module Lib where
 
 import Data.Bits (shiftL, (.|.))
 import Foreign
 import Foreign.C.String
 import Foreign.C.Types
-
---------------------------------------------------------------------------------
--- main
---------------------------------------------------------------------------------
-
-main :: IO ()
-main = do
-  window <- withCString "a window" (\name ->
-              rgfwCreateWindow
-                name
-                0
-                0
-                800
-                600
-                $ mkWindowFlags 
-                  [ WindowNoResize
-                  , WindowOpenGL
-                  , WindowFullscreen
-                  ]
-              )
-  let loop ctr = do
-        shouldClose <- rgfwWindowShouldClose window
-        if 0 /= shouldClose
-        then return shouldClose
-        else loop $ ctr + 1
-  exitCode <- loop 0
-  putStrLn $ show exitCode
-  return ()
 
 --------------------------------------------------------------------------------
 -- Haskell-ier abstractions
@@ -101,7 +73,7 @@ type RGFWwindowFlags = Word32
 
 type RGFWbool = CUInt
 
-foreign import capi "lib/RGFW_HS.h RGFW_createWindow" rgfwCreateWindow
+foreign import capi "RGFW_HS.h RGFW_createWindow" rgfwCreateWindow
   :: Ptr CChar
   -> CInt
   -> CInt
@@ -110,6 +82,6 @@ foreign import capi "lib/RGFW_HS.h RGFW_createWindow" rgfwCreateWindow
   -> RGFWwindowFlags
   -> IO RGFWwindowPtr
 
-foreign import capi "lib/RGFW_HS.h RGFW_window_shouldClose" rgfwWindowShouldClose
+foreign import capi "RGFW_HS.h RGFW_window_shouldClose" rgfwWindowShouldClose
   :: RGFWwindowPtr
   -> IO RGFWbool

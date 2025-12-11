@@ -10,7 +10,7 @@
 #define RGFW_OPENGL
 
 #define Time X11Time // fixes namespace clash with GHC when building with Nix
-#include "RGFW/RGFW.h"
+#include "RGFW.h"
 #undef Time
 
 #endif RGFW_HS
