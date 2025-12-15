@@ -10,7 +10,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 - support for Windows
 - support for actually doing anything
-- autogen code
+
+## [0.2.0] -- 2025-12-16
+
+### Added
+
+- example exe
+
+### Changed
+
+- probably everything ngl
+- use SemVer instead of PVP
+
+### Removed
+
+- probably everything ngl
 
 ## [0.1.0.2] -- 2025-12-11
 

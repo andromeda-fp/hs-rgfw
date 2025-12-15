@@ -7,9 +7,11 @@
     self,
     ...
   }: let
+    version = "0.2.0";
     package = {
       mkDerivation,
       base,
+      bindings-DSL,
       gl,
       lib,
       libGL,
@@ -20,10 +22,11 @@
     }:
       mkDerivation {
         pname = "hs-rgfw";
-        version = "0.1.0.0";
+        version = "0.2.0";
         src = ./.;
         libraryHaskellDepends = [
           base
+          bindings-DSL
         ];
         libraryPkgconfigDepends = [
           gl
