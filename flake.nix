@@ -8,7 +8,7 @@
     self,
     ...
   }: let
-    version = "0.2.1";
+    version = "0.2.2";
     package = {
       mkDerivation,
       base,
@@ -23,7 +23,7 @@
     }:
       mkDerivation {
         pname = "hs-rgfw";
-        version = "0.2.0";
+        inherit version;
         src = ./.;
         libraryHaskellDepends = [
           base

@@ -9,7 +9,41 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 ### Added
 
 - support for Windows
-- support for actually doing anything
+- native Wayland support
+
+### Removed
+
+- `C'u8` as an alias to `CChar`
+
+## [0.2.2] -- 2025-12-16
+
+### Added
+
+- enums `RGFW_keymod` and `RGFW_key` as `CUChar` aliases
+    - all variants bound as constants
+- `C'RGFW_bool` as `CUChar` alias. 0 is true, else is false
+- new callback
+    - `RGFW_keyfunc`
+- various new methods in `RGFW.hsc`
+    - `RGFW_window_setShouldClose`
+    - `RGFW_pollEvents`
+    - `RGFW_setKeyCallback`
+- key callback functionallity in demo application
+    - `esc` closes the window
+
+### Changed
+
+- modularized `hs-rgfw.cabal` for the sake of tidiness
+
+### Deprecated
+
+- `C'u8` as a type alias to `CChar`
+    - such declarations are needed in C but not in Haskell
+    - `CUChar` is the preferable type for cross-platform later
+
+### Fixed
+
+- correctly inherit `version` in `flake.nix`
 
 ## [0.2.1] -- 2025-12-16
 
