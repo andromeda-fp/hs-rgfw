@@ -1,0 +1,3 @@
+[submodule "rgfw"]
+	path = include/RGFW
+	url = https://github.com/ColleagueRiley/RGFW

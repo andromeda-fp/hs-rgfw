@@ -1,13 +1,14 @@
 {
   inputs = {
     nixpkgs.url = "nixpkgs/nixpkgs-unstable";
+    self.submodules = true;
   };
   outputs = {
     nixpkgs,
     self,
     ...
   }: let
-    version = "0.2.0";
+    version = "0.2.1";
     package = {
       mkDerivation,
       base,

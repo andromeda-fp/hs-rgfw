@@ -11,6 +11,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 - support for Windows
 - support for actually doing anything
 
+## [0.2.1] -- 2025-12-16
+
+### Changed
+
+- submodule for `RGFW.h` to ensure reproducability
+    - add `RGFW` as submodule
+    - modify flake to copy self's submodules to the store
+    - change include path of `library` in `hs-game.cabal`
+    - change include path of `lib/RGFW.hsc`
+
+### Removed
+
+- random junk files from `lib`
+    - no breaking changes, none were in any way linked
+
 ## [0.2.0] -- 2025-12-16
 
 ### Added
