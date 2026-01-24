@@ -46,7 +46,7 @@
         ];
         preBuild = ''
           set -x
-          export PATH=${hs-bindgen-cli}/bin:\$PATH
+          export PATH=${hs-bindgen-cli}/bin:$PATH
           ./generate.sh
           set +x
         '';
