@@ -1,3 +1,6 @@
+echo "#"
+echo "# generating library RGFW.Generated in folder lib"
+echo "#"
 hs-bindgen-cli preprocess \
   -Irgfw \
   --create-output-dirs \

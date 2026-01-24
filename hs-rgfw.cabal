@@ -15,6 +15,7 @@ library
   exposed-modules: RGFW.Generated
   build-depends:
     , base
+    , primitive
     , c-expr-runtime
     , hs-bindgen-runtime
   include-dirs: rgfw

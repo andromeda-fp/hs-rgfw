@@ -1,7 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "nixpkgs/nixpkgs-unstable";
-    hs-bindgen.url = "github:well-typed/hs-bindgen/fd74e8fa4216eccd67069ec9d8637b57000ffc83";
+    hs-bindgen.url = "github:well-typed/hs-bindgen";
     self.submodules = true;
   };
   outputs = {
