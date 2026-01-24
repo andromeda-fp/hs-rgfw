@@ -1,0 +1,13 @@
+packages:
+    ./
+
+source-repository-package
+    type: git
+    location: https://github.com/well-typed/hs-bindgen.git
+    tag: 933d11d771ff13b6a3b851cb0ec9bc3632626f2f
+    subdir: hs-bindgen-runtime
+source-repository-package
+    type: git
+    location: https://github.com/well-typed/hs-bindgen.git
+    tag: 933d11d771ff13b6a3b851cb0ec9bc3632626f2f
+    subdir: c-expr-runtime
