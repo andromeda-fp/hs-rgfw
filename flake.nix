@@ -26,7 +26,9 @@
       libXi,
       xrandr,
       # shell deps
+      clang,
       hs-bindgen-cli,
+      tree,
     }:
       mkDerivation {
         pname = "hs-rgfw";
@@ -44,9 +46,9 @@
           libXi
           xrandr
         ];
-        preBuild = ''
+        preConfigure = ''
           set -x
-          export PATH=${hs-bindgen-cli}/bin:$PATH
+          export PATH=${clang}/bin:${hs-bindgen-cli}/bin:${tree}/bin:$PATH
           ./generate.sh
           set +x
         '';

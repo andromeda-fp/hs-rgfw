@@ -8,20 +8,38 @@ maintainer: Matrix @andromeda:tchncs.de
 build-type: Simple
 extra-doc-files: README.md
 common warnings
-  ghc-options: -Wall
+  ghc-options:
+    -Wall
+    -DRGFW_IMPLEMENTATION
+    -DRGFW_OPENGL
+    -- the following irresponsibly copy-pasted from `nix develop --command "pkg-config --libs --cflags <lots of things>`
+    -I/nix/store/b608h3ylrhrwpi9bc0y0014jf7j03pzl-libglvnd-1.7.0-dev/include -I/nix/store/sbhg4bnrg0l22936dbwrnl33vzd3kcmf-libx11-1.8.12-dev/include -I/nix/store/l7mab2s2kjsz2pz8dfgvh39af7w7gji1-xorgproto-2024.1/include -I/nix/store/7ys6dfy22hkm2bklwq7ll7pmby443fka-libxcursor-1.2.3-dev/include -I/nix/store/jb2w03lbwm7j01zn9qzcnnqcc1ca5dyj-libxi-1.8.2-dev/include -I/nix/store/1315vzcs2vm98pgsdzwsxm7i2mzjc0g7-libxext-1.3.6-dev/include -I/nix/store/vr2rj7zz28zvsnycx45kn6hhim0ky94z-libxfixes-6.0.2-dev/include -I/nix/store/wkrn5svcggds11pbkyjfka7b2i3wbmhj-libxrender-0.9.12-dev/include -I/nix/store/s7q5sdki2ax8gla778mbhddf5v9gk4vb-libxrandr-1.5.4-dev/include -L/nix/store/mm4v6w3wj8wi5qc6rwdrb2rkqs08whp9-libglvnd-1.7.0/lib -L/nix/store/ja09m2gfni7pqk4bsrhjb8y9cq74rspp-libx11-1.8.12/lib -L/nix/store/ldl1g8r8jfhjv4asb7zkr7ljpgk7q6dv-libxcursor-1.2.3/lib -L/nix/store/xg9763xyrnkxhvqgvxdbfiwxnmz391rx-libxi-1.8.2/lib -L/nix/store/55071y2xjibw8f317scvlg788w31k7k8-libxext-1.3.6/lib -L/nix/store/i6mb757zbagjs50kh7n9sk51f7wsr5f3-libxfixes-6.0.2/lib -L/nix/store/dgjd3hf8ny62vbjg10w64x4jwm7cv81k-libxrender-0.9.12/lib -L/nix/store/llr8wn0a3q8vfrg6i7vr2l2k66izm56a-libxrandr-1.5.4/lib -lXcursor -lXrandr -lXi -lGL -lXrender -lX11 -lXext -lXfixes
+    lib/RGFW.c
+    -fPIC
 
 library
   import: warnings
-  exposed-modules: RGFW.Generated
+  exposed-modules:
+    , RGFW.Generated
+    , RGFW.Generated.FunPtr
+    , RGFW.Generated.Safe
+    , RGFW.Generated.Unsafe
   build-depends:
     , base
     , primitive
     , c-expr-runtime
     , hs-bindgen-runtime
-  include-dirs: rgfw
+  pkgconfig-depends:
+    , gl
+    , x11
+    , xcursor
+    , xrandr
+    , xi
+  include-dirs: lib/include
   hs-source-dirs: lib
   default-language: Haskell2010
   default-extensions: FlexibleInstances
+  c-sources: lib/RGFW.c
 
 executable hs-rgfw
   import: warnings
@@ -37,6 +55,6 @@ executable hs-rgfw
     , xcursor
     , xrandr
     , xi
-  include-dirs: rgfw
+  include-dirs: lib/include
   hs-source-dirs: src
   default-language: Haskell2010
