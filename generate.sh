@@ -1,4 +1,3 @@
-set -x
 echo "# copying header..."
 
 mkdir -p lib/include
@@ -19,33 +18,32 @@ done
 
 echo "# creating c file from header..."
 
+# other macro definitions should be defined with ghc-options: -copt-D in *.cabal
 cat > lib/RGFW.c <<EOF
 #define RGFW_IMPLEMENTATION
-#define RGFW_OPENGL
-#define RGFW_EXPORT
 #include "RGFW.h"
 EOF
 
-echo "# creating c object file..."
-
-clang -c lib/RGFW.c -o lib/RGFW.o $CFLAGS -Ilib/include
-
 echo "# generating library RGFW.Generated..."
 
+#  --unsafe _unsafe \
+#  --pointer _pointer \
+set -x
 hs-bindgen-cli preprocess \
   -Ilib/include \
-  --parse-from-main-header-dirs \
+  --unique-id andromeda.hs-rgfw \
   --create-output-dirs \
   --overwrite-files \
+  --single-file \
+  --safe _safe \
   --hs-output-dir lib \
   --module RGFW.Generated \
   --define-macro=RGFW_OPENGL \
   --define-macro=RGFW_EXPORT \
-  --define-macro=RGFW_IMPLEMENTATION \
   $HBC_ARGS \
   RGFW.h
-
-echo "# file tree generated:"
-tree lib
-
 set +x
+
+echo "# generated filetree:"
+
+tree lib
