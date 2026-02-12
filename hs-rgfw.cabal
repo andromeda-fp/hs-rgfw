@@ -8,21 +8,12 @@ maintainer: Matrix @andromeda:tchncs.de
 build-type: Simple
 extra-doc-files: README.md
 common warnings
-  ghc-options:
-    -Wall
-    -- -DRGFW_IMPLEMENTATION
-    -optc-DRGFW_OPENGL
-    -- the following irresponsibly copy-pasted from `nix develop --command "pkg-config --libs --cflags <lots of things>`
-    -I/nix/store/q9fb1ps2fxa8p4n13mbsijz9w0svhsd4-libglvnd-1.7.0-dev/include -I/nix/store/bd3w1kiylx50mbdq1qnghxnrk7rqw7ib-libx11-1.8.12-dev/include -I/nix/store/v80f5g95bb540sz5qd3cjbzis091p015-xorgproto-2025.1/include -I/nix/store/1zph9n1dgiv9i5xybz3yw8np29yzd05w-libxcursor-1.2.3-dev/include -I/nix/store/3ff2i1by76icng5azfy1lww2nmdw3wi4-libxi-1.8.2-dev/include -I/nix/store/7bjf4y2jf16gbin2dz8zs7kzj7im6x5g-libxext-1.3.6-dev/include -I/nix/store/wqgqkakj6zz8z2xkqc546b5qj1nrhmjs-libxfixes-6.0.2-dev/include -I/nix/store/4b5ins5hx2b7cz3fynfhifdkz1icivka-libxrender-0.9.12-dev/include -I/nix/store/dibxrry7ws9gacpvx32scrb4akvcpwg6-libxrandr-1.5.4-dev/include -L/nix/store/bafh2k71bs9ls9vjzkkvpzfzilqqis8c-libglvnd-1.7.0/lib -L/nix/store/0iwk3dvbzgdhd05zxys60n0ba413kcxn-libx11-1.8.12/lib -L/nix/store/7li7v2a2ny1b84avw8wzcsbcgmabfnqr-libxcursor-1.2.3/lib -L/nix/store/2jpi8ynpyjya1agxgc0d4bj1cy1q6gv5-libxi-1.8.2/lib -L/nix/store/56n8all0668rxns0pcszrdz44cx7wsgn-libxext-1.3.6/lib -L/nix/store/sk07aw3nnfhgh77cwk7824y99kpdhdik-libxfixes-6.0.2/lib -L/nix/store/4hm802941g9kl9w49wgf06yf504d8ja1-libxrender-0.9.12/lib -L/nix/store/64c50fvn61nfnz21gjh81qq216nacbgr-libxrandr-1.5.4/lib -lXcursor -lXrandr -lXi -lGL -lXrender -lX11 -lXext -lXfixes
-    -fPIC
+  ghc-options: -Wall
 
 library
   import: warnings
-  exposed-modules:
-    , RGFW.Generated
-    , RGFW.Generated.FunPtr
-    , RGFW.Generated.Safe
-    , RGFW.Generated.Unsafe
+  -- hs-bindgen-cli uses --single-file flag, so no other modules
+  exposed-modules: RGFW.Generated
   build-depends:
     , base
     , primitive
@@ -38,6 +29,10 @@ library
   hs-source-dirs: lib
   default-language: Haskell2010
   default-extensions: FlexibleInstances
+  -- options for RGFW passed here
+  ghc-options:
+    -optc-DRGFW_OPENGL
+    -optc-DRGFW_EXPORT
   c-sources: lib/RGFW.c
 
 executable hs-rgfw
