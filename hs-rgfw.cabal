@@ -40,9 +40,11 @@ executable hs-rgfw
   main-is: Main.hs
   build-depends:
     , base
-    , hs-rgfw
+    , bytestring
     , c-expr-runtime
     , hs-bindgen-runtime
+    , hs-rgfw
+    , OpenGL
   pkgconfig-depends:
     , gl
     , x11

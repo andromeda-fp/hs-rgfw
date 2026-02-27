@@ -10,52 +10,6 @@
     self,
     ...
   }: let
-    version = "0.1.0";
-    package = {
-      # nix stuff
-      mkDerivation,
-      lib,
-      # haskell deps
-      base,
-      c-expr-runtime,
-      hs-bindgen-runtime,
-      # pkgconfig deps
-      libGL,
-      libX11,
-      libXcursor,
-      libXi,
-      xrandr,
-      # shell deps
-      clang,
-      hs-bindgen-cli,
-      tree,
-    }:
-      mkDerivation {
-        pname = "hs-rgfw";
-        inherit version;
-        src = ./.;
-        libraryHaskellDepends = [
-          base
-          c-expr-runtime
-          hs-bindgen-runtime
-        ];
-        libraryPkgconfigDepends = [
-          libGL
-          libX11
-          libXcursor
-          libXi
-          xrandr
-        ];
-        preConfigure = ''
-          set -x
-          export PATH=${clang}/bin:${hs-bindgen-cli}/bin:${tree}/bin:$PATH
-          ./generate.sh
-          set +x
-        '';
-        homepage = "https://git.mtgmonkey.net/Andromeda/hs-rgfw";
-        license = lib.licenses.gpl3Only;
-        platforms = ["x86_64-linux"];
-      };
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
@@ -69,6 +23,8 @@
       default = pkgs.mkShell {
         stdenv = pkgs.clangStdenv;
         packages = [
+          pkgs.haskellPackages.ghcide
+          pkgs.haskellPackages.ormolu
           pkgs.clang
           pkgs.cabal-install
           pkgs.hs-bindgen-cli
@@ -80,7 +36,18 @@
       };
     };
     packages.${system} = {
-      default = pkgs.haskellPackages.callPackage package {};
+      default =
+        (pkgs.haskell.packages.ghc912.callCabal2nix "hs-rgfw" ./. {
+          xi = pkgs.libxi;
+          gl = pkgs.libGL;
+          xcursor = pkgs.libxcursor;
+          xrandr = pkgs.xrandr;
+        }).overrideAttrs {
+          preConfigure = ''
+            export PATH=${pkgs.clang}/bin:${pkgs.hs-bindgen-cli}/bin:${pkgs.tree}/bin:$PATH
+            ./generate.sh
+          '';
+        };
     };
   };
 }
